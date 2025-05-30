@@ -1,0 +1,17 @@
+name = "Akablog"
+license = "MIT"
+licenselink = "https://github.com/yourusername/akablog/blob/main/LICENSE" # Replace with your actual license link
+description = "A clean, modern blog theme for Hugo, featuring light/dark mode, responsive design, and focus on content readability."
+homepage = "https://github.com/yourusername/akablog/" # Replace with your theme's repository
+tags = ["blog", "responsive", "dark mode", "light mode", "minimal", "clean", "tailwind", "personal"]
+features = ["responsive", "dark mode", "syntax highlighting", "pagination", "customizable tags"]
+min_version = "0.123.0" # Minimum Hugo version required
+
+[author]
+  name = "Your Name or Alias" # Your name or your organization's name
+  homepage = "https://yourwebsite.com" # Your personal or organization's website
+
+# If your theme has a demo site, you can add it here
+# [demo]
+#  url = "https://demo.example.com/akablog/"
+#  image = "images/screenshot.png" # Path to a screenshot in your theme's static/images folder

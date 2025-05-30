@@ -1,0 +1,43 @@
+
+<article class="bg-white dark:bg-neutral-800 rounded-lg shadow-md overflow-hidden flex flex-col transition-shadow hover:shadow-xl">
+  {{ if .Params.image }}
+  <a href="{{ .Permalink }}" class="block">
+    <img src="{{ .Params.image | absURL }}" alt="{{ .Title }}" class="w-full h-48 object-cover" loading="lazy">
+  </a>
+  {{ end }}
+  <div class="p-6 flex-grow flex flex-col">
+    <div class="mb-2 text-xs text-neutral-500 dark:text-neutral-400">
+      {{ if .Params.author }}
+      <span class="font-medium text-indigo-600 dark:text-indigo-400">{{ .Params.author }}</span>
+      <span class="mx-1">&bull;</span>
+      {{ end }}
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+    </div>
+    <h3 class="text-lg font-bold mb-2 text-neutral-900 dark:text-white flex justify-between items-start">
+      <a href="{{ .Permalink }}" class="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+        {{ .Title }}
+      </a>
+      <a href="{{ .Permalink }}" class="ml-2 text-neutral-400 dark:text-neutral-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="Read more about {{ .Title }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up-right"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+      </a>
+    </h3>
+    <p class="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2 mb-4 flex-grow">
+      {{ .Summary | plainify | truncate 120 }}
+    </p>
+    {{ if .Params.tags }}
+    <div class="mt-auto pt-2"> 
+      {{ range .Params.tags }}
+        {{ $tagName := . }}
+        {{ $tagStyle := index site.Data.tag_styles (urlize $tagName) | default (index site.Data.tag_styles "default") }}
+        {{ $tagPage := $.Site.GetPage (printf "/tags/%s" (urlize $tagName)) }}
+        <a href="{{ $tagPage.Permalink }}" class="inline-block text-xs font-medium mr-2 mb-2 px-2.5 py-1 rounded-full transition-colors duration-150
+          {{ $tagStyle.bgColorLight | default "bg-neutral-100" }} {{ $tagStyle.textColorLight | default "text-neutral-700" }}
+          dark:{{ $tagStyle.bgColorDark | default "dark:bg-neutral-700" }} dark:{{ $tagStyle.textColorDark | default "dark:text-neutral-200" }}
+          hover:brightness-90 dark:hover:brightness-110">
+          {{ . }}
+        </a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</article>

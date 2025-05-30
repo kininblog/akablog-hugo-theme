@@ -1,0 +1,18 @@
+
+<footer class="border-t border-neutral-200 dark:border-neutral-700 mt-16">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">
+    <p>&copy; {{ now.Format "2006" }} {{ .Site.Params.author | default .Site.Title }}. All rights reserved.</p>
+    <nav class="mt-2 space-x-4" aria-label="Footer links">
+      {{ with .Site.Params.twitter }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">Twitter</a>{{ end }}
+      {{ with .Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">LinkedIn</a>{{ end }}
+      {{ with .Site.Params.email }}<a href="{{ . }}" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">Email</a>{{ end }}
+      {{ with .Site.Params.rss_feed }}<a href="{{ . | absURL }}" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">RSS Feed</a>{{ end }}
+      {{ with .Site.Params.add_to_feedly }}{{ $rssUrl := absURL ($.Site.Params.rss_feed | default "/index.xml") }}<a href="{{ . }}{{ $rssUrl }}" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">Add to Feedly</a>{{ end }}
+    </nav>
+    {{ if .Site.Params.showPoweredBy }}
+    <p class="mt-2 text-xs">
+      Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">Hugo</a> &amp; <a href="https://akazed.com/akablog-simple-hugo-theme/" target="_blank" rel="noopener" class="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">Akablog Theme</a>.
+    </p>
+    {{ end }}
+  </div>
+</footer>

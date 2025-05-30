@@ -1,0 +1,35 @@
+
+{{ $posts := .posts }}
+{{ $context := .context }}
+
+<section class="mt-16 mb-16">
+  <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-8">Recent blog posts</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    {{/* Left Column */}}
+    <div class="space-y-6 md:space-y-8">
+      {{/* Card A - Most recent post (Featured) */}}
+      {{ with index $posts 0 }}
+        {{ partial "post-card-recent.html" (dict "post" . "variant" "featured" "context" $context) }}
+      {{ end }}
+
+      {{/* Card D - Text-only post (e.g., 4th recent post) */}}
+      {{ with index $posts 3 }}
+         {{ partial "post-card-recent.html" (dict "post" . "variant" "textOnly" "context" $context) }}
+      {{ end }}
+    </div>
+
+    {{/* Right Column */}}
+    <div class="space-y-6 md:space-y-8">
+      {{/* Card B - Image-only (e.g., 2nd recent post) */}}
+      {{ with index $posts 1 }}
+        {{ partial "post-card-recent.html" (dict "post" . "variant" "imageOnly" "context" $context) }}
+      {{ end }}
+      
+      {{/* Card C - Image-only (e.g., 3rd recent post) */}}
+      {{ with index $posts 2 }}
+        {{ partial "post-card-recent.html" (dict "post" . "variant" "imageOnly" "context" $context) }}
+      {{ end }}
+    </div>
+  </div>
+</section>

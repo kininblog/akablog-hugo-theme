@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en-us" }}" class="{{ .Site.Params.defaultTheme | default "" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+
+  {{ hugo.Generator }}
+
+  {{/* SEO Meta Tags */}}
+  <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else if .Description }}{{ .Description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+  {{ if .Keywords }}<meta name="keywords" content="{{ delimit .Keywords ", " }}">{{ end }}
+
+  {{/* Open Graph */}}
+  <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+  <meta property="og:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else if .Description }}{{ .Description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  {{ if .Params.image }}
+  <meta property="og:image" content="{{ .Params.image | absURL }}">
+  {{ else if .Site.Params.og_image }}
+  <meta property="og:image" content="{{ .Site.Params.og_image | absURL }}">
+  {{ end }}
+
+  {{/* Twitter Card */}}
+  <meta name="twitter:card" content="summary_large_image">
+  {{ if .Params.image }}
+  <meta name="twitter:image" content="{{ .Params.image | absURL }}">
+  {{ else if .Site.Params.og_image }}
+  <meta name="twitter:image" content="{{ .Site.Params.og_image | absURL }}">
+  {{ end }}
+  <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+  <meta name="twitter:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else if .Description }}{{ .Description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+  {{ if .Site.Params.twitter_site }}<meta name="twitter:site" content="@{{ .Site.Params.twitter_site }}">{{ end }}
+  {{ if .Site.Params.twitter_creator }}<meta name="twitter:creator" content="@{{ .Site.Params.twitter_creator }}">{{ end }}
+
+  {{/* Favicon */}}
+  {{ if .Site.Params.favicon }}
+  <link rel="icon" href="{{ .Site.Params.favicon | absURL }}">
+  {{ end }}
+  <link rel="apple-touch-icon" href="{{ "/apple-touch-icon.png" | absURL }}"> {{/* Add your apple-touch-icon.png to static folder */}}
+
+  {{/* CSS */}}
+  {{ $options := (dict "outputStyle" "compressed" "enableSourceMap" true) }}
+  {{ $style := resources.Get "css/style.css" | resources.PostCSS (dict "config" "postcss.config.js") }}
+  {{ if hugo.IsProduction }}
+    {{ $style = $style | minify | fingerprint }}
+  {{ end }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+  
+  {{/* Google Fonts */}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  {{/* RSS Feed */}}
+  {{ range .AlternativeOutputFormats -}}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+  {{ end -}}
+
+  {{/* Custom head template */}}
+  {{ partial "head-custom.html" . }}
+
+  <script>
+    // Handle theme toggle
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+  <div class="flex flex-col min-h-screen">
+    {{ partial "header.html" . }}
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+  </div>
+
+  {{ $jsPermalink := "" }}
+  {{ $jsIntegrity := "" }}
+  {{ $jsResource := resources.Get "js/theme.js" }}
+
+  {{ if $jsResource }}
+    {{ $jsMinified := $jsResource | minify }}
+    {{ if $jsMinified }}
+      {{ $jsFingerprinted := $jsMinified | fingerprint }}
+      {{ if $jsFingerprinted }}
+        {{ $jsPermalink = $jsFingerprinted.RelPermalink }}
+        {{ $jsIntegrity = $jsFingerprinted.Data.Integrity }}
+      {{ else }}
+        {{ warnf "Failed to fingerprint JS resource: %s from %s" $jsMinified.Name $jsResource.Path }}
+      {{ end }}
+    {{ else }}
+      {{ warnf "Failed to minify JS resource: %s from %s" $jsResource.Name $jsResource.Path }}
+    {{ end }}
+  {{ else }}
+    {{ warnf "JavaScript resource 'js/theme.js' not found in assets directory. Ensure themes/akablog/assets/js/theme.js exists." }}
+  {{ end }}
+
+  {{ if $jsPermalink }}
+    <script src="{{ $jsPermalink }}" integrity="{{ $jsIntegrity }}" defer></script>
+  {{ else }}
+    <!-- JavaScript theme.js could not be processed. Check warnings. -->
+  {{ end }}
+</body>
+</html>

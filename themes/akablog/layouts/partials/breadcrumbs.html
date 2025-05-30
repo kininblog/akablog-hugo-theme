@@ -1,0 +1,59 @@
+{{ $currentPage := . }}
+{{ $breadcrumbs := slice }}
+
+<!-- Add Home to breadcrumbs -->
+{{ $homePage := .Site.Home }}
+{{ $breadcrumbs = $breadcrumbs | append (dict "url" $homePage.Permalink "name" ($homePage.Params.breadcrumbTitle | default ($homePage.Title | default (T "homeBreadcrumb" | default "Home")))) }}
+
+<!-- Add Section if it exists and is not the homepage itself -->
+{{ if .Section }}
+  {{ $sectionPage := .Site.GetPage (printf "/%s" .Section) }}
+  {{ if and $sectionPage (ne $sectionPage.RelPermalink $homePage.RelPermalink) }}
+    {{ $sectionTitle := $sectionPage.Params.breadcrumbTitle | default $sectionPage.Title }}
+    {{ $breadcrumbs = $breadcrumbs | append (dict "url" $sectionPage.Permalink "name" $sectionTitle) }}
+  {{ end }}
+{{ end }}
+
+<!-- Add Current Page (Post Title) -->
+{{ $breadcrumbs = $breadcrumbs | append (dict "url" .Permalink "name" .Title "isCurrent" true) }}
+
+{{ if ge (len $breadcrumbs) 2 }} {{/* Only show breadcrumbs if there's more than one item (e.g., Home + Current) */}}
+<nav aria-label="Breadcrumb" class="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
+  <ol class="flex flex-wrap items-center space-x-1.5 rtl:space-x-reverse" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {{ range $index, $element := $breadcrumbs }}
+      <li class="inline-flex items-center" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        {{ if $element.isCurrent }}
+          <span itemprop="name" class="text-neutral-700 dark:text-neutral-200 font-medium">{{ $element.name | truncate 50 }}</span>
+        {{ else }}
+          <a itemprop="item" href="{{ $element.url }}" class="hover:underline hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+            <span itemprop="name">{{ $element.name }}</span>
+          </a>
+        {{ end }}
+        <meta itemprop="position" content="{{ add $index 1 }}" />
+        {{ if not $element.isCurrent }}
+        <svg class="w-3 h-3 text-neutral-400 dark:text-neutral-500 mx-1.5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="m1 9 4-4-4-4"/>
+        </svg>
+        {{ end }}
+      </li>
+    {{ end }}
+  </ol>
+</nav>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {{ range $index, $element := $breadcrumbs }}
+    {
+      "@type": "ListItem",
+      "position": {{ add $index 1 }},
+      "name": "{{ $element.name | replace `"` `\"` }}",
+      {{ if not $element.isCurrent }}"item": "{{ $element.url | absURL }}"{{ end }}
+    }{{ if lt (add $index 1) (len $breadcrumbs) }},{{ end }}
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}

@@ -1,0 +1,76 @@
+
+{{ define "main" }}
+<article class="prose dark:prose-invert lg:prose-xl max-w-3xl mx-auto py-8">
+  {{ partial "breadcrumbs.html" . }}
+  <header class="mb-8 text-center border-b border-neutral-200 dark:border-neutral-700 pb-8">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 dark:text-white !mb-3">
+      {{ .Title }}
+    </h1>
+    <div class="text-sm text-neutral-500 dark:text-neutral-400">
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+        {{ .Date.Format ( .Site.Params.dateFormatSingle | default "January 2, 2006") }}
+      </time>
+      {{ if .Params.author }}
+        <span class="mx-1">&bull;</span>
+        <span>{{ .Params.author }}</span>
+      {{ end }}
+      {{ if .ReadingTime }}
+        <span class="mx-1">&bull;</span>
+        <span>{{ .ReadingTime }} {{ T "minRead" | default "min read" }}</span>
+      {{ end }}
+    </div>
+    {{ if .Params.tags }}
+    <div class="mt-4">
+      {{ range .Params.tags }}
+        {{ $tagName := . }}
+        {{ $tagPage := $.Site.GetPage (printf "/tags/%s" (urlize $tagName)) }}
+        <a href="{{ $tagPage.Permalink }}" class="inline-block bg-neutral-100 dark:bg-neutral-700 text-xs font-medium text-neutral-600 dark:text-neutral-300 mr-2 mb-2 px-2.5 py-1 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-150">
+          {{ . }}
+        </a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ if .Params.image }}
+  <figure class="mb-8">
+    <img src="{{ .Params.image | absURL }}" alt="{{ .Title }}" class="w-full h-auto rounded-lg shadow-md object-cover" loading="lazy">
+    {{ if .Params.image_caption }}
+    <figcaption class="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-2">{{ .Params.image_caption | markdownify }}</figcaption>
+    {{ end }}
+  </figure>
+  {{ end }}
+  
+  <div class="entry-content">
+    {{ .Content }}
+  </div>
+
+  {{/* Related Posts Section */}}
+  {{ partial "related-posts.html" . }}
+
+  {{/* Disqus Comments Section */}}
+  {{ if .Site.Params.disqusShortname }}
+    <div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-700"
+         id="disqus-comments-wrapper"
+         data-disqus-shortname="{{ .Site.Params.disqusShortname }}"
+         data-disqus-url="{{ .Permalink }}"
+         data-disqus-identifier="{{ .File.UniqueID }}" 
+         data-disqus-title="{{ .Title }}">
+      
+      <div id="disqus_thread_container" class="hidden">
+        <div id="disqus_thread"></div>
+      </div>
+
+      <button id="load-disqus-comments-button" type="button" class="mx-auto flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-offset-neutral-900 transition-colors">
+        Lihat Komentar
+      </button>
+      
+      <noscript>
+        <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-md text-yellow-700 dark:text-yellow-200">
+          Aktifkan JavaScript untuk melihat komentar. <a href="https://disqus.com/?ref_noscript" rel="nofollow" class="underline hover:text-yellow-800 dark:hover:text-yellow-100">Comments powered by Disqus.</a>
+        </div>
+      </noscript>
+    </div>
+  {{ end }}
+</article>
+{{ end }}

@@ -1,0 +1,317 @@
+/* Import Tailwind base, components, and utilities */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Custom base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 font-sans antialiased selection:bg-indigo-500 selection:text-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-neutral-900 dark:text-white;
+  }
+  /* Links */
+  a {
+    @apply text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-150;
+  }
+  /* Prose styles for markdown content */
+  .prose {
+    @apply text-neutral-700 dark:text-neutral-300;
+  }
+  .prose a {
+    @apply text-indigo-600 dark:text-indigo-400 hover:underline;
+  }
+  .prose strong {
+    @apply text-neutral-900 dark:text-white;
+  }
+  .prose code:not(pre code) { /* Target only inline code */
+    @apply px-1 py-0.5 bg-neutral-200 dark:bg-neutral-700 rounded-sm text-sm text-pink-600 dark:text-pink-400;
+  }
+  .prose pre {
+    /* Base styling for <pre> to be complemented by PrismJS */
+    @apply bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 p-4 rounded-lg shadow-sm overflow-x-auto my-6;
+  }
+  .prose blockquote {
+    @apply border-l-4 border-neutral-300 dark:border-neutral-600 pl-4 italic text-neutral-600 dark:text-neutral-400;
+  }
+  .prose hr {
+      @apply border-neutral-200 dark:border-neutral-700 my-8;
+  }
+  .prose img {
+      @apply rounded-lg shadow-sm;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  /* Utility classes for aspect ratio if @tailwindcss/aspect-ratio plugin is not available or fails */
+  .aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9 / 16 * 100) */
+  }
+  .aspect-w-16 > * { /* Direct child selector for the content to fill the aspect ratio box */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .aspect-h-9 {
+    /* This class is part of the pair, actual padding is set by aspect-w-* */
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Specific hero text size */
+  h1.uppercase.text-\[96px\] {
+    font-size: 96px; /* Fallback for browsers not supporting arbitrary values */
+  }
+  @media (max-width: 1024px) { /* lg */
+    h1.uppercase.text-\[96px\] { font-size: 80px; }
+  }
+  @media (max-width: 768px) { /* md */
+    h1.uppercase.text-\[96px\] { font-size: 60px; }
+  }
+  @media (max-width: 640px) { /* sm */
+    h1.uppercase.text-\[96px\] { font-size: 48px; }
+  }
+   @media (max-width: 480px) {
+    h1.uppercase.text-\[96px\] { font-size: 36px; }
+  }
+
+  /* Tag Pill Styles - Default if not found in data/tag_styles.json */
+  .tag-default {
+    @apply bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200;
+  }
+}
+
+/* Ensure sticky header has a background in all states */
+header.sticky {
+  background-color: rgba(255, 255, 255, 0.95); /* Light mode with opacity */
+}
+html.dark header.sticky {
+  background-color: rgba(23, 23, 23, 0.95); /* Dark mode with opacity (neutral-900) */
+}
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+  header.sticky {
+    background-color: rgba(255, 255, 255, 0.6); /* Light mode with blur */
+  }
+  html.dark header.sticky {
+    background-color: rgba(23, 23, 23, 0.6); /* Dark mode with blur */
+  }
+}
+
+/* Additional styling for focus states for accessibility */
+*:focus-visible {
+  @apply outline-none ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-neutral-900;
+}
+
+/* Hamburger menu icon transition */
+#mobile-menu-button[aria-expanded="true"] #menu-icon-open {
+  display: none;
+}
+#mobile-menu-button[aria-expanded="true"] #menu-icon-close {
+  display: block;
+}
+
+/* Mobile menu display */
+#mobile-menu.block { /* This ensures that when JS adds/removes 'hidden', 'block' is the fallback */
+  display: block;
+}
+
+
+/* PrismJS Theme Integration - Refined for consistency */
+pre[class*="language-"] {
+  @apply bg-neutral-100 dark:bg-neutral-800 !important; /* Ensure background overrides Prism's default */
+  @apply text-neutral-900 dark:text-neutral-100; /* Base text color */
+  @apply p-4 rounded-lg shadow-sm overflow-x-auto my-6 text-sm;
+  /* Remove Prism's default text-shadow if any */
+  text-shadow: none !important; 
+}
+
+pre[class*="language-"] code[class*="language-"] {
+  @apply bg-transparent p-0 shadow-none text-inherit; /* Ensure code inside pre inherits background and text color */
+  text-shadow: none !important;
+}
+
+/* Line numbers styling */
+pre[class*="language-"].line-numbers {
+  @apply pl-12 sm:pl-14; /* Adjust padding for line numbers */
+}
+
+.line-numbers .line-numbers-rows {
+  @apply border-r border-neutral-300 dark:border-neutral-700 pr-3 mr-4 text-xs;
+  left: -0.5em !important; /* Adjust position if needed */
+}
+.line-numbers-rows > span::before {
+  @apply text-neutral-500 dark:text-neutral-400;
+}
+
+/* Toolbar (for copy button, language name) */
+div.code-toolbar > .toolbar {
+  @apply opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-300;
+  /* Tailwind's group utility is added to the parent <pre> or a wrapper by JS or Hugo's Markdown renderer */
+}
+
+div.code-toolbar > .toolbar .toolbar-item > button,
+div.code-toolbar > .toolbar .toolbar-item > span {
+  @apply bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-200
+         px-2.5 py-1 text-xs font-medium rounded-md shadow-sm
+         hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors;
+}
+
+div.code-toolbar > .toolbar .toolbar-item > button:focus-visible,
+div.code-toolbar > .toolbar .toolbar-item > span:focus-visible {
+  @apply ring-2 ring-indigo-500 ring-offset-1 dark:ring-offset-neutral-800;
+}
+
+/* PrismJS Token Colors - Aligned with Tailwind color palette for consistency */
+
+/* Default text color for code, will be overridden by specific tokens */
+pre[class*="language-"] code {
+  color: theme('colors.neutral.800');
+}
+html.dark pre[class*="language-"] code {
+  color: theme('colors.neutral.200');
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: theme('colors.neutral.500');
+}
+html.dark .token.comment,
+html.dark .token.prolog,
+html.dark .token.doctype,
+html.dark .token.cdata {
+  color: theme('colors.neutral.400');
+}
+
+.token.punctuation {
+  color: theme('colors.neutral.600');
+}
+html.dark .token.punctuation {
+  color: theme('colors.neutral.400');
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: theme('colors.purple.600');
+}
+html.dark .token.property,
+html.dark .token.tag,
+html.dark .token.boolean,
+html.dark .token.number,
+html.dark .token.constant,
+html.dark .token.symbol,
+html.dark .token.deleted {
+  color: theme('colors.purple.400');
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: theme('colors.green.600');
+}
+html.dark .token.selector,
+html.dark .token.attr-name,
+html.dark .token.string,
+html.dark .token.char,
+html.dark .token.builtin,
+html.dark .token.inserted {
+  color: theme('colors.green.400');
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string, /* Keep original Prism selector for specificity */
+.style .token.string {       /* Keep original Prism selector for specificity */
+  color: theme('colors.orange.600');
+  background: transparent !important; /* Remove Prism's default light background for operator */
+}
+html.dark .token.operator,
+html.dark .token.entity,
+html.dark .token.url,
+html.dark .language-css .token.string,
+html.dark .style .token.string {
+  color: theme('colors.orange.400');
+  background: transparent !important; /* Remove Prism's default dark background for operator */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: theme('colors.blue.600');
+}
+html.dark .token.atrule,
+html.dark .token.attr-value,
+html.dark .token.keyword {
+  color: theme('colors.blue.400');
+}
+
+.token.function,
+.token.class-name {
+  color: theme('colors.pink.600');
+}
+html.dark .token.function,
+html.dark .token.class-name {
+  color: theme('colors.pink.400');
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: theme('colors.yellow.600');
+}
+html.dark .token.regex,
+html.dark .token.important,
+html.dark .token.variable {
+  color: theme('colors.yellow.400');
+}
+
+.token.important,
+.token.bold {
+  @apply font-bold;
+}
+
+/*
+.token.italic {
+  @apply italic;  <-- This was the problematic line
+}
+*/
+/* Italic styling for tokens should be handled by the Prism.js theme CSS
+   (e.g., themes/akablog/static/vendor/prism/prism.css which contains:
+   .token.italic { font-style: italic; } )
+   If it's not being applied, ensure that prism.css is correctly loaded and
+   is not being overridden by other styles.
+   Using `@apply italic;` here creates a circular dependency because Tailwind's
+   `italic` utility itself sets `font-style: italic;`.
+*/

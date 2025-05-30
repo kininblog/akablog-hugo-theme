@@ -1,0 +1,7 @@
+
+{
+  "name": "Personal Blog UI",
+  "description": "A React application replicating a modern blog design, featuring light/dark modes, recent posts, and paginated article listings.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

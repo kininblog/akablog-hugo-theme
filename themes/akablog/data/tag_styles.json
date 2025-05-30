@@ -1,0 +1,101 @@
+
+{
+  "default": {
+    "name": "Default",
+    "bgColorLight": "bg-neutral-100",
+    "textColorLight": "text-neutral-700",
+    "bgColorDark": "dark:bg-neutral-700",
+    "textColorDark": "dark:text-neutral-200"
+  },
+  "design": {
+    "name": "Design",
+    "bgColorLight": "bg-purple-100",
+    "textColorLight": "text-purple-700",
+    "bgColorDark": "dark:bg-purple-800",
+    "textColorDark": "dark:text-purple-200"
+  },
+  "research": {
+    "name": "Research",
+    "bgColorLight": "bg-pink-100",
+    "textColorLight": "text-pink-700",
+    "bgColorDark": "dark:bg-pink-800",
+    "textColorDark": "dark:text-pink-200"
+  },
+  "presentation": {
+    "name": "Presentation",
+    "bgColorLight": "bg-indigo-100",
+    "textColorLight": "text-indigo-700",
+    "bgColorDark": "dark:bg-indigo-800",
+    "textColorDark": "dark:text-indigo-200"
+  },
+  "interface": {
+    "name": "Interface",
+    "bgColorLight": "bg-sky-100",
+    "textColorLight": "text-sky-700",
+    "bgColorDark": "dark:bg-sky-800",
+    "textColorDark": "dark:text-sky-200"
+  },
+  "leadership": {
+    "name": "Leadership",
+    "bgColorLight": "bg-blue-100",
+    "textColorLight": "text-blue-700",
+    "bgColorDark": "dark:bg-blue-800",
+    "textColorDark": "dark:text-blue-200"
+  },
+  "management": {
+    "name": "Management",
+    "bgColorLight": "bg-gray-200",
+    "textColorLight": "text-gray-700",
+    "bgColorDark": "dark:bg-gray-700",
+    "textColorDark": "dark:text-gray-200"
+  },
+  "product": {
+    "name": "Product",
+    "bgColorLight": "bg-green-100",
+    "textColorLight": "text-green-700",
+    "bgColorDark": "dark:bg-green-800",
+    "textColorDark": "dark:text-green-200"
+  },
+  "frameworks": {
+    "name": "Frameworks",
+    "bgColorLight": "bg-yellow-100",
+    "textColorLight": "text-yellow-700",
+    "bgColorDark": "dark:bg-yellow-800",
+    "textColorDark": "dark:text-yellow-200"
+  },
+  "software-development": {
+    "name": "Software Development",
+    "bgColorLight": "bg-teal-100",
+    "textColorLight": "text-teal-700",
+    "bgColorDark": "dark:bg-teal-800",
+    "textColorDark": "dark:text-teal-200"
+  },
+  "tools": {
+    "name": "Tools",
+    "bgColorLight": "bg-orange-100",
+    "textColorLight": "text-orange-700",
+    "bgColorDark": "dark:bg-orange-800",
+    "textColorDark": "dark:text-orange-200"
+  },
+  "saas": {
+    "name": "SaaS",
+    "bgColorLight": "bg-red-100",
+    "textColorLight": "text-red-700",
+    "bgColorDark": "dark:bg-red-800",
+    "textColorDark": "dark:text-red-200"
+  },
+  "podcasts": {
+    "name": "Podcasts",
+    "bgColorLight": "bg-lime-100",
+    "textColorLight": "text-lime-700",
+    "bgColorDark": "dark:bg-lime-800",
+    "textColorDark": "dark:text-lime-200"
+  },
+  "customer-success": {
+    "name": "Customer Success",
+    "bgColorLight": "bg-cyan-100",
+    "textColorLight": "text-cyan-700",
+    "bgColorDark": "dark:bg-cyan-800",
+    "textColorDark": "dark:text-cyan-200"
+  }
+}

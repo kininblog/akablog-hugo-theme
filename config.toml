@@ -1,0 +1,158 @@
+baseURL = "https://example.com/" # Replace with your site's base URL
+languageCode = "id-id" # Or your preferred language e.g., en-us
+title = "Akablog Hugo Theme" # Replace with your blog's title
+theme = "akablog"
+paginate = 9 # Number of posts per page
+copyright = "© {year} Nama Anda atau Nama Blog Anda. Hak Cipta Dilindungi." # Dynamic year in footer
+
+enableRobotsTXT = true
+enableGitInfo = false # Set to true if you want to use .GitInfo
+summaryLength = 70 # Default summary length
+
+# Default theme for new users (can be 'light', 'dark', or empty for system preference)
+[params]
+  defaultTheme = "" # "light" or "dark" or empty for system preference
+  author = "Nama Anda" # Your name
+  description = "Deskripsi singkat tentang blog Anda." # Site description
+  site_name = "Akablog Hugo Theme" # Used in the header, can be different from site title
+  dateFormatSingle = "January 2, 2006" # Date format for single posts
+  dateFormatList = "Jan 2, 2006" # Date format for list items
+  mainSections = ["posts", "blog"] # Sections to include in main post listings
+  
+  # Favicon - Place in static folder
+  favicon = "/favicon.ico" # e.g., /favicon.ico or /images/favicon.png
+  # Optional: Open Graph image (used if a page doesn't have its own image)
+  og_image = "/images/og-default.png" # Place in static/images/
+
+  # Disqus shortname for comments. Leave empty or remove if not using Disqus.
+  disqusShortname = "akazed" # REPLACE THIS
+
+  # Social media links for footer (optional)
+  twitter = "https://twitter.com/yourusername"
+  linkedin = "https://linkedin.com/in/yourusername"
+  email = "mailto:youremail@example.com"
+  # rss_feed = "/index.xml" # Default path for Hugo's built-in RSS
+  # add_to_feedly = "https://feedly.com/i/subscription/feed/" # Base URL for Feedly, RSS feed URL will be appended
+
+  # Show "Powered by Hugo & Akablog Theme" in footer
+  showPoweredBy = true
+
+  # Breadcrumb settings
+  homeBreadcrumb = "Beranda" # Text for the home link in breadcrumbs
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true # Allow raw HTML in markdown if needed
+  [markup.highlight]
+    noClasses = false # Set to true to disable Chroma's default classes if you want to style with Tailwind only
+    # style = "monokailight" # Or any other Chroma style: https://xyproto.github.io/splash/docs/all.html
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
+
+[menu]
+  [[menu.main]]
+    identifier = "blog"
+    name = "Blog"
+    url = "/posts/" # Or your main blog section path e.g. /blog/
+    weight = 10
+
+  [[menu.main]]
+    identifier = "services"
+    name = "Layanan"
+    url = "#" # Bisa juga URL ke halaman ringkasan layanan jika ada
+    weight = 20
+
+  [[menu.main]]
+    identifier = "web-design"
+    name = "Desain Web"
+    url = "/services/web-design/"
+    parent = "services"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "seo"
+    name = "SEO"
+    url = "/services/seo/"
+    parent = "services"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "content-writing"
+    name = "Penulisan Konten"
+    url = "/services/content-writing/"
+    parent = "services"
+    weight = 3
+    
+  [[menu.main]]
+    identifier = "projects"
+    name = "Projects"
+    url = "/projects/" # Example, create content/projects/_index.md
+    weight = 30
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/" # Example, create content/about.md
+    weight = 40
+  
+  [[menu.main]]
+    identifier = "documentation"
+    name = "Dokumentasi"
+    url = "/posts/documentation/" # Path to the documentation post
+    weight = 45 # Adjust weight as needed
+
+  [[menu.main]]
+    identifier = "more"
+    name = "Lainnya"
+    url = "#"
+    weight = 50
+
+  [[menu.main]]
+    identifier = "newsletter"
+    name = "Newsletter"
+    url = "/newsletter/" # Example, create content/newsletter.md or link externally
+    parent = "more"
+    weight = 1
+  
+  [[menu.main]]
+    identifier = "contact"
+    name = "Kontak"
+    url = "/contact/"
+    parent = "more"
+    weight = 2
+
+
+[outputs]
+  home = ["HTML", "RSS"] # Removed "JSON"
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[build]
+  writeStats = true # Generates a hugo_stats.json file, useful for debugging PostCSS issues
+  # Set HUGO_ENVIRONMENT to "production" or use `hugo -e production` for production builds
+  # This enables minification and other optimizations.
+  [build.processing]
+    [build.processing.css]
+      [build.processing.css.tailwind]
+        version = 3
+        [build.processing.css.tailwind.config]
+          file = "tailwind.config.js"
+    [build.processing.js]
+      # If you have JS that needs processing in assets
+      # include = "js/**/*.js"
+      # minify = true # Set to false for development if needed
+      # target = "es2020"
+  [build.cachebusters]
+    # This configuration helps with cache busting by appending a hash to asset filenames.
+    # Hugo does this automatically for fingerprinted resources.
+    # This section might be more relevant for non-piped assets.
+    # For piped assets like CSS processed with PostCSS, fingerprinting in baseof.html handles this.
+
+# For hugo mod clean. Delete files matching any of these patterns from the module download cache.
+# [module.hugoVersion]
+# extended = true
+# min = "0.123.0"
